@@ -17,7 +17,7 @@ router.get('/', async(req, res) => {
 
 //обновить данные пользователя
 router.put('/:id', async (req, res) => {
-    if(req.body.id == req.params.id || req.body.isAdmin) {
+    if (req.body.userId == req.params.id || req.body.isAdmin) {
         if (req.body.password) {
             try {
                 const salt = await bcrypt.genSalt(10)
@@ -38,3 +38,18 @@ router.put('/:id', async (req, res) => {
         return res.status(403).json('Вы можете обновить только свой аккаунт!')
     }
 })
+
+//удалить пользователя
+router.delete('/:id', async (req, res) => {
+    if (req.body.userId == req.params.id || req.body.isAdmin) {
+        try {
+            await User.findByIdAndDelete(req.params.id)
+            res.status(200).json('Аккаунт успешно удален')
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    } else {
+        return res.status(403).json('Вы можете удалить только свой аккаунт')
+    }
+})
+
