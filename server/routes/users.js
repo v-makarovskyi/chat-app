@@ -114,3 +114,5 @@ router.put("/:id/unfollow", async (req, res) => {
     res.status(403).json('Вы не можете отписаться от самого себя')
   }
 });
+
+module.exports = router;
