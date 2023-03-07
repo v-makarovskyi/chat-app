@@ -6,6 +6,13 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const multer = require('multer')
 const { default: helmet } = require('helmet')
+const port = process.env.PORT || 8800
+
+const userRoute = require('./routes/users')
+const authRoute = require('./routes/auth')
+const postsRoute = require('./routes/posts')
+const conversationRoute = require('./routes/conversations')
+const messagesRoute = require('./routes/messages')
 
 dotenv.config()
 
@@ -18,6 +25,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')))
 app.use(express.json())
 app.use(helmet())
 app.use(morgan('common'))
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -38,7 +46,13 @@ app.post('api/upload', upload.single('file'), (req, res) => {
     }
 })
 
+app.use('/api/auth', authRoute)
+app.use('/api/users', userRoute)
+app.use('/api/posts', postsRoute)
+app.use('/api/conversation', conversationRoute)
+app.use('/api/messages', messagesRoute)
 
-app.listen(8800, () => {
-    console.log(`Backend server is running on port ${process.env.PORT}`)
+
+app.listen(port, () => {
+    console.log(`Backend server is running on port ${port}`)
 })
