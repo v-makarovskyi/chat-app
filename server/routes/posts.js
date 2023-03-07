@@ -48,7 +48,7 @@ router.put('/:id/like', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
         if (!post.likes.includes(req.body.userId)) {
-            await post.updateOne({ $pull: { likes: req.body.userId } })
+            await post.updateOne({ $push: { likes: req.body.userId } })
             res.status(200).json('Ваш лайк к посту добавлен!')
         } else {
             await post.updateOne({ $pull: { likes: req.body.userId } })
@@ -56,6 +56,16 @@ router.put('/:id/like', async (req, res) => {
         }
     } catch (error) {
        res.status(500).json(error) 
+    }
+})
+
+//получить пост
+router.get('/:id', async (req, res) => {
+    try {
+       const post = Post.findById(req.params.id)
+       res.status(200).json(post) 
+    } catch (error) {
+        res.status(500).json(error)
     }
 })
 
