@@ -38,6 +38,4 @@ router.get('/find/:firstUserId/:secondUserId', async (req, res) => {
     }
 })
 
-
-
 module.exports = router
